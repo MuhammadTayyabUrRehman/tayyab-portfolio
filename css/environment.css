@@ -1,0 +1,223 @@
+/* THE COSMIC ENVIRONMENT
+   Logic for Space Depth and Glassmorphism 
+*/
+
+#universe {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #050505;
+    z-index: 10;
+    cursor: grab;
+}
+
+#universe:active {
+    cursor: grabbing;
+}
+
+.hidden {
+    display: none;
+    opacity: 0;
+}
+
+.fade-in {
+    animation: nexusFadeIn 2s forwards;
+}
+
+#starfield-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+#nebula-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(75, 0, 130, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+    mix-blend-mode: screen;
+}
+
+/* EXPLORATION HUD */
+#exploration-hud {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    font-family: 'Syncopate', sans-serif;
+    color: var(--interface-accent);
+    z-index: 100;
+    pointer-events: none;
+}
+
+.coord-display {
+    font-size: 10px;
+    letter-spacing: 2px;
+    background: rgba(0, 255, 200, 0.1);
+    padding: 8px 12px;
+    border-left: 2px solid var(--interface-accent);
+}
+
+/* DISCOVERY MODAL (GLASSMORPHISM) */
+#discovery-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.modal-hidden {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-visible {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+}
+
+.modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 800px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 60px;
+    border-radius: 4px;
+    color: #fff;
+    transform: translateY(50px);
+    transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.modal-visible .modal-content {
+    transform: translateY(0);
+}
+
+.close-btn {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 32px;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+}
+
+.close-btn:hover {
+    opacity: 1;
+}
+
+/* INTERIOR CONTENT STYLING */
+.category-tag {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 10px;
+    color: var(--interface-accent);
+    display: block;
+    margin-bottom: 10px;
+}
+
+.modal-content h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 3rem;
+    margin: 0 0 30px 0;
+    font-weight: 700;
+}
+
+.tech-stack {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.tag {
+    padding: 5px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 11px;
+    font-family: 'Space Grotesk', sans-serif;
+    border-radius: 20px;
+}
+
+.stat-box {
+    margin-top: 25px;
+}
+
+.stat-box .label {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 9px;
+    display: block;
+    margin-bottom: 8px;
+    opacity: 0.6;
+}
+
+.bar {
+    width: 100%;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.fill {
+    height: 100%;
+    background: var(--interface-accent);
+    box-shadow: 0 0 10px var(--interface-accent);
+}
+
+@keyframes nexusFadeIn {
+    from { opacity: 0; transform: scale(1.1); }
+    to { opacity: 1; transform: scale(1); }
+}
+/* COMPASS STYLING - Add to css/environment.css */
+
+#compass-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    pointer-events: none;
+}
+
+.compass-pointer {
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--nexus-cyan), transparent);
+    position: relative;
+    transform-origin: left center;
+    transition: opacity 0.3s ease;
+}
+
+.compass-pointer::after {
+    content: '';
+    position: absolute;
+    right: -5px;
+    top: -3px;
+    width: 8px;
+    height: 8px;
+    border-top: 2px solid var(--nexus-cyan);
+    border-right: 2px solid var(--nexus-cyan);
+    transform: rotate(45deg);
+}
+
+.compass-pointer .dist {
+    position: absolute;
+    left: 45px;
+    top: -8px;
+    font-size: 8px;
+    white-space: nowrap;
+    color: var(--text-dim);
+    font-family: 'Syncopate', sans-serif;
+}

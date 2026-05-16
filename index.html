@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Cosmic Nexus | Senior Software Engineer Portfolio</title>
+    
+    <meta name="description" content="A unique, gamified exploration of high-end software engineering, UI/UX design, and business analysis.">
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/splash.css">
+    <link rel="stylesheet" href="css/environment.css">
+</head>
+<body class="no-scroll">
+
+    <section id="splash-portal" class="portal-container">
+        <div class="portal-overlay"></div>
+        <div class="portal-ring">
+            <div class="portal-inner-preview">
+                <canvas id="portal-canvas"></canvas>
+            </div>
+        </div>
+        <div class="portal-text">
+            <h1 class="glitch" data-text="ENTER THE NEXUS">ENTER THE NEXUS</h1>
+            <p class="sub-text">Click to initialize deep space exploration</p>
+        </div>
+    </section>
+
+    <main id="universe" class="hidden">
+        <canvas id="starfield-canvas"></canvas>
+        <div id="nebula-overlay"></div>
+        
+        <div id="exploration-hud">
+            <div class="coord-display">
+                X: <span id="coord-x">0</span> | Y: <span id="coord-y">0</span>
+            </div>
+            <nav class="mini-map">
+                </nav>
+        </div>
+
+        <section id="celestial-bodies">
+            </section>
+    </main>
+
+    <aside id="discovery-overlay" class="modal-hidden">
+        <div class="modal-backdrop"></div>
+        <article class="modal-content">
+            <button class="close-btn" aria-label="Close discovery">&times;</button>
+            <div id="modal-body-injector">
+                </div>
+        </article>
+    </aside>
+
+    <script src="js/data/content.js"></script>
+    
+    <script type="module">
+        import { AppEngine } from './js/main.js';
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize the high-performance engine
+            window.NexusEngine = new AppEngine();
+            window.NexusEngine.init();
+        });
+    </script>
+</body>
+</html>

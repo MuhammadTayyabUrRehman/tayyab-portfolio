@@ -1,0 +1,122 @@
+/* 
+  NEXUS DESIGN SYSTEM v1.1 
+  Focus: Global Variables, Typography, and Layout Resilience
+*/
+
+:root {
+    /* Color Palette - Deep Space & High-Contrast Accents */
+    --void-black: #050505;
+    --nexus-cyan: #00ffc8;
+    --neon-magenta: #ff00ff;
+    --deep-indigo: #4b0082;
+    --text-primary: #ffffff;
+    --text-dim: rgba(255, 255, 255, 0.6);
+    --interface-border: rgba(255, 255, 255, 0.1);
+    
+    /* Animation Timing */
+    --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+    --transition-fast: 0.3s var(--ease-out-expo);
+    --transition-slow: 0.8s var(--ease-out-expo);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--void-black);
+    color: var(--text-primary);
+    font-family: 'Space Grotesk', sans-serif;
+    line-height: 1.6;
+    overflow: hidden; /* Lock scroll for the Physics Engine */
+    -webkit-font-smoothing: antialiased;
+}
+
+.no-scroll {
+    overflow: hidden;
+    touch-action: none; /* Prevents mobile rubber-banding */
+}
+
+/* Typography Scale */
+h1, h2, h3 {
+    font-family: 'Syncopate', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+
+/* SHARED INTERFACE COMPONENTS */
+
+/* Glassmorphism Panel */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--interface-border);
+    border-radius: 4px;
+}
+
+/* High-Performance Interactive Buttons */
+.nexus-btn {
+    background: transparent;
+    border: 1px solid var(--nexus-cyan);
+    color: var(--nexus-cyan);
+    padding: 12px 24px;
+    font-family: 'Syncopate', sans-serif;
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    position: relative;
+    overflow: hidden;
+}
+
+.nexus-btn:hover {
+    background: var(--nexus-cyan);
+    color: var(--void-black);
+    box-shadow: 0 0 20px rgba(0, 255, 200, 0.4);
+}
+
+/* UTILITY: The Scanline Effect (For that 0.1% Rare Detail) */
+body::after {
+    content: " ";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%, 
+        rgba(0, 0, 0, 0.1) 50%
+    ), linear-gradient(
+        90deg, 
+        rgba(255, 0, 0, 0.02), 
+        rgba(0, 255, 0, 0.01), 
+        rgba(0, 0, blue, 0.02)
+    );
+    z-index: 99999;
+    background-size: 100% 4px, 3px 100%;
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+/* COORDINATE FEEDBACK (HUD) */
+.coord-display span {
+    color: var(--nexus-cyan);
+    font-weight: 700;
+}
+
+/* SCROLLBAR (For Modals) */
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--nexus-cyan);
+    border-radius: 2px;
+}
