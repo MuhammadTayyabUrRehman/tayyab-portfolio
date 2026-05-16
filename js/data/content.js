@@ -1,45 +1,47 @@
 /**
  * Global Portfolio Data
- * This manifest drives the content within the discovery modals.
- * Structure is designed for high-end business and technical analysis.
+ * Personalized Portfolio Manifest
  */
 
 const PORTFOLIO_DATA = {
     experience: {
         id: 'exp',
-        category: 'BIOGRAPHY & TENURE',
-        title: '20+ Years of Engineering',
-        description: 'Architecting high-scale systems and award-winning digital experiences. Expertise in bridging the gap between complex business requirements and high-performance software execution. Specializing in UI/UX systems that have generated over $10M in value across 100+ shipped products.',
-        tags: ['System Architecture', 'Requirement Elicitation', 'Team Leadership', 'Context Analysis'],
-        complexity: 95,
-        impact: 98
+        category: 'EDUCATION & DEVELOPMENT',
+        title: 'Software Engineering Student',
+        description: 'Software Engineering student at NUtech currently in 6th semester with practical experience in frontend development,  SQL databases, and AI automation systems. Passionate about building modern digital experiences and continuously learning emerging technologies.',
+        tags: ['React.js', 'Node.js', 'Java', 'SQL', 'Problem Solving'],
+        complexity: 78,
+        impact: 82
     },
+
     skills: {
         id: 'skills',
-        category: 'TECHNICAL ARSENAL',
-        title: 'Binary Expertise',
-        description: 'A dual-hemisphere approach to development. The "Lava" represents the heat of backend logic, high-concurrency systems, and robust architecture. The "Ice" represents the precision of UI/UX design, user psychology, and pixel-perfect front-end conformance.',
-        tags: ['Vanilla JS', 'Canvas API', 'Optimization', 'Requirement Conformance', 'UX Psychology'],
-        complexity: 90,
-        impact: 85
+        category: 'TECHNICAL SKILLS',
+        title: 'Development & Design Stack',
+        description: 'Focused on modern web development, UI/UX design, and backend integration. Experienced with React frontend development, Node.js backend basics, Java OOP concepts, SQL database handling, and responsive UI design principles.',
+        tags: ['React + Vite', 'UI/UX Design', 'Java OOP', 'Data Structures', 'REST APIs'],
+        complexity: 80,
+        impact: 84
     },
+
     projects: {
         id: 'projects',
-        category: 'GALLERY OF EXCELLENCE',
-        title: 'Award-Winning Artifacts',
-        description: 'A collection of $10,000+ tier websites. Each project is a case study in performance, accessibility, and business goal alignment. These are not just websites; they are high-conversion engines built with architectural integrity.',
-        tags: ['E-Commerce', 'FinTech', 'SaaS', 'Interactive Media'],
-        complexity: 88,
-        impact: 99
+        category: 'FEATURED PROJECTS',
+        title: 'Academic & Personal Projects',
+        description: 'Developed multiple academic and personal projects including AI automation systems, responsive frontend applications, Java-based management systems, and UI/UX mockups. Projects emphasize clean design, functionality, and practical implementation.',
+        tags: ['AI RAG System', 'University Management System', 'Spotify Clone', 'Facebook Mockup'],
+        complexity: 83,
+        impact: 88
     },
+
     easterEgg: {
         id: 'void',
-        category: 'HIDDEN NEXUS',
-        title: 'The Unseen Variable',
-        description: 'You have discovered the void logic. This represents the ability to find solutions in the most ambiguous requirement environments.',
-        tags: ['Problem Solving', 'Adaptability', 'Critical Thinking'],
-        complexity: 100,
-        impact: 100
+        category: 'CORE STRENGTHS',
+        title: 'Quick Learner Mindset',
+        description: 'Strong research abilities with adaptability to learn new technologies quickly. Focused on improving technical expertise in AI automation, web engineering, and user-centered design through continuous practice and experimentation.',
+        tags: ['Research Skills', 'Adaptability', 'Critical Thinking'],
+        complexity: 92,
+        impact: 90
     }
 };
 
