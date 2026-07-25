@@ -14,6 +14,8 @@
 
 *A portfolio isn't a resume in a browser tab. It's the first thing a recruiter, collaborator, or fellow engineer experiences of your work — so it should demonstrate craft, not just describe it.*
 
+### 🚀 [**Live Demo**](https://muhammadtayyaburrehman.github.io/tayyab-portfolio/)
+
 </div>
 
 ---
