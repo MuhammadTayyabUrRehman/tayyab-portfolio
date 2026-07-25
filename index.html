@@ -3,32 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>The Cosmic Nexus | Senior Software Engineer Portfolio</title>
+    <title>Muhammad Tayyab | Software Engineer Portfolio</title>
     
     <meta name="description" content="A unique, gamified exploration of high-end software engineering, UI/UX design, and business analysis.">
     <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;700&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/splash.css">
     <link rel="stylesheet" href="css/environment.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 </head>
 <body class="no-scroll">
 
-    <section id="splash-portal" class="portal-container">
-        <div class="portal-overlay"></div>
-        <div class="portal-ring">
-            <div class="portal-inner-preview">
-                <canvas id="portal-canvas"></canvas>
+    <section id="splash-portal" class="splash-station">
+        <video id="splash-video" class="splash-video" autoplay muted loop playsinline preload="metadata"
+               poster="assets/splash_poster.jpg">
+            <source src="assets/splash_video.mp4" type="video/mp4">
+        </video>
+        <div class="splash-video-fallback"></div>
+        <div class="splash-scanlines"></div>
+        <div class="splash-vignette"></div>
+
+        <canvas id="portal-canvas" class="portal-burst-canvas"></canvas>
+
+        <header class="splash-topbar">
+            <div class="hud-tag hud-tag--right">
+                <span class="pulse-dot"></span>
+                Signal Stable
             </div>
+        </header>
+
+        <div class="splash-core">
+            <div class="mission-preamble">
+                <p class="hud-label">Interstellar Portfolio</p>
+                <span class="preamble-divider"></span>
+            </div>
+
+            <h1 class="splash-title">Mission Brief</h1>
+
+            <p class="splash-copy">Beyond this gateway lies a universe built from software, AI, and curiosity.<br>
+                Every planet holds a different chapter.</p>
+
+            <span class="cta-divider"></span>
+
+            <button id="begin-mission-btn" class="mission-btn">
+                <span class="mission-btn-scan" aria-hidden="true"></span>
+                <span class="mission-btn-glyph">&#9675;</span>
+                <span class="mission-btn-label">Begin Mission</span>
+                <span class="mission-btn-arrow" aria-hidden="true">&#8594;</span>
+            </button>
+
+            <span class="cta-divider"></span>
+
+            <p class="splash-hint">Best experienced on desktop &middot; mouse or trackpad to navigate</p>
         </div>
-        <div class="portal-text">
-            <h1 class="glitch" data-text="ENTER THE NEXUS">ENTER THE NEXUS</h1>
-            <p class="sub-text">Click to initialize deep space exploration</p>
-        </div>
+
+        <footer class="splash-footbar">
+            <div class="hud-tag">
+                <span class="hud-tag-label">System Status</span>
+                <span class="hud-tag-value online">Online</span>
+            </div>
+            <div class="hud-tag hud-tag--right">
+                <span class="hud-tag-label">Portfolio Build</span>
+                <span class="hud-tag-value">2026 Edition</span>
+            </div>
+        </footer>
     </section>
 
     <main id="universe" class="hidden">
@@ -36,6 +80,11 @@
         <div id="nebula-overlay"></div>
         
         <div id="exploration-hud">
+            <div id="mission-objective" class="mission-objective glass-panel">
+                <span class="mission-label">Next Destination</span>
+                <span id="mission-target" class="mission-target">&mdash;</span>
+                <span id="mission-distance" class="mission-distance">&mdash;</span>
+            </div>
             <div class="coord-display">
                 X: <span id="coord-x">0</span> | Y: <span id="coord-y">0</span>
             </div>
@@ -60,12 +109,29 @@
     
     <script type="module">
         import { AppEngine } from './js/main.js';
-        
+
         document.addEventListener('DOMContentLoaded', () => {
             // Initialize the high-performance engine
             window.NexusEngine = new AppEngine();
             window.NexusEngine.init();
         });
+    </script>
+
+    <script>
+        // Ambient / SFX hook architecture (no assets wired yet).
+        // Populate the src values below once audio files are added under assets/audio/.
+        window.AudioHooks = {
+            portalHum: null,      // e.g. 'assets/audio/portal-hum.mp3'
+            buttonClick: null,    // e.g. 'assets/audio/click.mp3'
+            planetDiscovery: null,
+            uiHover: null,
+            spaceAmbience: null,
+            play(name) {
+                const src = this[name];
+                if (!src) return; // silently no-op until assets exist
+                new Audio(src).play().catch(() => {});
+            }
+        };
     </script>
 </body>
 </html>

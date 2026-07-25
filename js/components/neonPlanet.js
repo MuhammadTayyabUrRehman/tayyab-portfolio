@@ -56,11 +56,11 @@ export class NeonPlanet extends Planet {
         ctx.fillStyle = coreGradient;
         ctx.fill();
 
-        // 3. Neon Ring (The Saturn Effect)
+        // 3. Neon Ring (The Saturn Effect) — flares wider and brighter on hover
         ctx.beginPath();
-        ctx.ellipse(0, 0, this.size * 1.8, this.size * 0.4, Math.PI / 6, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(0, 255, 255, 0.5)';
-        ctx.lineWidth = 3;
+        ctx.ellipse(0, 0, this.size * (this.isHovered ? 2.05 : 1.8), this.size * 0.4, Math.PI / 6, 0, Math.PI * 2);
+        ctx.strokeStyle = this.isHovered ? 'rgba(0, 255, 255, 0.85)' : 'rgba(0, 255, 255, 0.5)';
+        ctx.lineWidth = this.isHovered ? 4 : 3;
         ctx.stroke();
 
         // 4. Planet Label

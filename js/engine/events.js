@@ -72,9 +72,12 @@ export class InteractionManager {
         });
 
         if (this.hoveredPlanet !== found) {
+            if (this.hoveredPlanet) this.hoveredPlanet.isHovered = false;
+            if (found) found.isHovered = true;
+
             this.hoveredPlanet = found;
             this.engine.eventBus.emit('HOVER_CHANGE', { planet: found });
-            
+
             // Cursor Feedback for "Award-Winning" UX
             document.body.style.cursor = found ? 'pointer' : 'default';
         }

@@ -50,6 +50,40 @@
     pointer-events: none;
 }
 
+/* MISSION OBJECTIVE PANEL */
+.mission-objective {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    min-width: 220px;
+}
+
+.mission-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    opacity: 0.6;
+}
+
+.mission-target {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    color: #fff;
+    text-transform: none;
+}
+
+.mission-distance {
+    font-size: 9px;
+    letter-spacing: 1px;
+    color: var(--interface-accent);
+}
+
+.mission-objective.mission-complete .mission-target {
+    color: var(--interface-accent);
+}
+
 .coord-display {
     font-size: 10px;
     letter-spacing: 2px;
@@ -91,7 +125,9 @@
 .modal-content {
     position: relative;
     width: 90%;
-    max-width: 800px;
+    max-width: 860px;
+    max-height: 84vh;
+    overflow-y: auto;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 60px;
@@ -154,28 +190,205 @@
     border-radius: 20px;
 }
 
-.stat-box {
-    margin-top: 25px;
+.discovery-links {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
 }
 
-.stat-box .label {
+.transmission-link {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 12px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 2px solid var(--interface-accent);
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.transmission-link:hover {
+    background: rgba(0, 255, 200, 0.06);
+    transform: translateX(4px);
+}
+
+.transmission-link-label {
     font-family: 'Syncopate', sans-serif;
     font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--interface-accent);
+}
+
+.transmission-link-value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    color: #fff;
+}
+
+/* DISCOVERY BODY — shared structure across all four planet layouts */
+.discovery-summary {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-dim);
+    max-width: 640px;
+}
+
+.discovery-subhead {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    color: var(--interface-accent);
+    margin: 40px 0 18px 0;
+}
+
+/* Experience: education + timeline */
+.education-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.education-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 10px;
+    padding: 12px 16px;
+    border-left: 2px solid var(--interface-accent);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.education-degree {
+    font-weight: 700;
+}
+
+.education-institution {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+}
+
+.education-duration {
+    margin-left: auto;
+    font-family: 'Syncopate', sans-serif;
+    font-size: 0.65rem;
+    color: var(--interface-accent);
+}
+
+.timeline-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.timeline-item {
+    padding: 16px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 2px solid var(--interface-accent);
+}
+
+.timeline-item-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.timeline-role {
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+.timeline-duration {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 0.65rem;
+    color: var(--interface-accent);
+    white-space: nowrap;
+}
+
+.timeline-org {
     display: block;
-    margin-bottom: 8px;
-    opacity: 0.6;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin: 4px 0 12px 0;
 }
 
-.bar {
-    width: 100%;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.1);
+.timeline-points {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    line-height: 1.8;
 }
 
-.fill {
-    height: 100%;
-    background: var(--interface-accent);
-    box-shadow: 0 0 10px var(--interface-accent);
+/* Skills: categorized stack grid */
+.stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 24px;
+    margin-top: 20px;
+}
+
+.stack-category-label {
+    display: block;
+    font-family: 'Syncopate', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    color: var(--interface-accent);
+    margin-bottom: 10px;
+}
+
+.tag--strength {
+    border-color: rgba(0, 255, 200, 0.3);
+}
+
+/* Projects: card list */
+.project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    margin-top: 10px;
+}
+
+.project-card {
+    padding: 20px 24px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 2px solid var(--interface-accent);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.project-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.project-name {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+}
+
+.project-category {
+    font-size: 0.7rem;
+    color: var(--interface-accent);
+    letter-spacing: 1px;
+}
+
+.project-description {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin: 10px 0 0 0;
+}
+
+.project-highlights {
+    margin: 14px 0 0 0;
+    padding-left: 18px;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    line-height: 1.8;
 }
 
 @keyframes nexusFadeIn {

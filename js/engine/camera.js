@@ -10,7 +10,10 @@ export class Camera {
         this.targetOffset = { x: 0, y: 0 };
         this.isDragging = false;
         this.lastMousePos = { x: 0, y: 0 };
-        
+        this.isFlying = false; // true during a scripted flyTo() tween
+        this.keys = new Set();
+        this.keyPanSpeed = 14;
+
         // Composition: Camera "has a" PhysicsEngine
         this.physics = new PhysicsEngine({
             friction: 0.92,
@@ -25,11 +28,63 @@ export class Camera {
         window.addEventListener('mousedown', (e) => this.startDrag(e));
         window.addEventListener('mousemove', (e) => this.onDrag(e));
         window.addEventListener('mouseup', () => this.stopDrag());
-        
+
         // Touch Controls
         window.addEventListener('touchstart', (e) => this.startDrag(e.touches[0]), { passive: false });
         window.addEventListener('touchmove', (e) => this.onDrag(e.touches[0]), { passive: false });
         window.addEventListener('touchend', () => this.stopDrag());
+
+        // Keyboard Controls: Arrow Keys + WASD
+        const panKeys = new Set(['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright']);
+        window.addEventListener('keydown', (e) => {
+            const key = e.key.toLowerCase();
+            if (panKeys.has(key)) this.keys.add(key);
+        });
+        window.addEventListener('keyup', (e) => {
+            this.keys.delete(e.key.toLowerCase());
+        });
+    }
+
+    applyKeyboardPan() {
+        if (this.isFlying || this.keys.size === 0) return;
+
+        let dx = 0, dy = 0;
+        if (this.keys.has('w') || this.keys.has('arrowup')) dy -= this.keyPanSpeed;
+        if (this.keys.has('s') || this.keys.has('arrowdown')) dy += this.keyPanSpeed;
+        if (this.keys.has('a') || this.keys.has('arrowleft')) dx -= this.keyPanSpeed;
+        if (this.keys.has('d') || this.keys.has('arrowright')) dx += this.keyPanSpeed;
+
+        this.targetOffset.x += dx;
+        this.targetOffset.y += dy;
+        this.offset.x += dx;
+        this.offset.y += dy;
+    }
+
+    /**
+     * Cinematic ease toward a world point (used for planet discovery).
+     * @param {number} worldX
+     * @param {number} worldY
+     * @param {Function} onComplete
+     */
+    flyTo(worldX, worldY, onComplete) {
+        this.isFlying = true;
+        const destX = worldX - window.innerWidth / 2;
+        const destY = worldY - window.innerHeight / 2;
+
+        gsap.to(this.offset, {
+            x: destX,
+            y: destY,
+            duration: 1.6,
+            ease: 'power3.inOut',
+            onUpdate: () => {
+                this.targetOffset.x = this.offset.x;
+                this.targetOffset.y = this.offset.y;
+            },
+            onComplete: () => {
+                this.isFlying = false;
+                if (onComplete) onComplete();
+            }
+        });
     }
 
     startDrag(e) {
@@ -69,6 +124,10 @@ export class Camera {
      * Called every frame by the AppEngine runLoop
      */
     update() {
+        if (this.isFlying) return this.offset; // GSAP owns the offset during a scripted flight
+
+        this.applyKeyboardPan();
+
         // Apply physics to bridge the gap between actual offset and target offset
         const result = this.physics.applyInertia(
             this.offset, 

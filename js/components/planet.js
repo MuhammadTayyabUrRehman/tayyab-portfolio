@@ -10,6 +10,7 @@ export class Planet {
         this.size = size;
         this.data = data; // Portfolio content (title, description, etc.)
         this.rotation = 0;
+        this.isHovered = false;
     }
 
     /**

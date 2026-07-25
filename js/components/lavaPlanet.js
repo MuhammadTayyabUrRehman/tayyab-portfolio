@@ -24,15 +24,16 @@ export class ElementalPlanet extends Planet {
         // 1. Core Procedural Surface
         ctx.drawImage(this.texture, -this.size, -this.size);
 
-        // 2. Atmospheric Conflict (Lava vs Ice Glow)
+        // 2. Atmospheric Conflict (Lava vs Ice Glow) — intensifies on hover
+        const hoverBoost = this.isHovered ? 1.6 : 1;
         const outerGlow = ctx.createRadialGradient(0, 0, this.size * 0.8, 0, 0, this.size * 1.5);
-        outerGlow.addColorStop(0, 'rgba(255, 69, 0, 0.2)');
-        outerGlow.addColorStop(0.5, 'rgba(0, 242, 255, 0.1)');
+        outerGlow.addColorStop(0, `rgba(255, 69, 0, ${0.2 * hoverBoost})`);
+        outerGlow.addColorStop(0.5, `rgba(0, 242, 255, ${0.1 * hoverBoost})`);
         outerGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
-        
+
         ctx.fillStyle = outerGlow;
         ctx.beginPath();
-        ctx.arc(0, 0, this.size * 1.5 + (this.glowPulse / 2), 0, Math.PI * 2);
+        ctx.arc(0, 0, this.size * 1.5 + (this.glowPulse / 2) + (this.isHovered ? 15 : 0), 0, Math.PI * 2);
         ctx.fill();
 
         // 3. Label with Tech Shadow

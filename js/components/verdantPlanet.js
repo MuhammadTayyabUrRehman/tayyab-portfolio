@@ -14,13 +14,15 @@ export class VerdantPlanet extends Planet {
         ctx.translate(screenX, screenY);
         ctx.rotate(this.rotation);
 
-        // 1. Atmosphere Glow
-        const gradient = ctx.createRadialGradient(0, 0, this.size * 0.8, 0, 0, this.size * 1.2);
-        gradient.addColorStop(0, 'rgba(46, 204, 113, 0.4)');
+        // 1. Atmosphere Glow (brightens on hover for the "discovering a world" feel)
+        const glowSize = this.isHovered ? this.size * 1.45 : this.size * 1.2;
+        const glowAlpha = this.isHovered ? 0.7 : 0.4;
+        const gradient = ctx.createRadialGradient(0, 0, this.size * 0.8, 0, 0, glowSize);
+        gradient.addColorStop(0, `rgba(46, 204, 113, ${glowAlpha})`);
         gradient.addColorStop(1, 'rgba(46, 204, 113, 0)');
         ctx.fillStyle = gradient;
         ctx.beginPath();
-        ctx.arc(0, 0, this.size * 1.2, 0, Math.PI * 2);
+        ctx.arc(0, 0, glowSize, 0, Math.PI * 2);
         ctx.fill();
 
         // 2. Planet Core (The "Green" Landmasses)

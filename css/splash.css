@@ -1,120 +1,338 @@
-/* 
-  NEXUS SPLASH PORTAL v2.0
-  Cinematic Entrance Logic: High Contrast & Molten Specs
+/*
+  NEXUS SPLASH STATION v4.0 — Mission Briefing Interface
+  2026 product-design direction: quiet hierarchy, generous negative
+  space, sparse periodic motion instead of constant animation.
 */
 
 :root {
-    --portal-size: 600px; /* Increased for high-fidelity particle field */
-    --void-bg: #020202;   /* Pure obsidian void for brutal contrast */
-    --interface-accent: #00ffc8;
-    --molten-glow: rgba(255, 100, 0, 0.6);
+    --void-bg: #020202;
+
+    /* Text */
+    --text-primary: #F5F7FA;
+    --text-secondary: rgba(245, 247, 250, 0.72);
+    --text-tertiary: rgba(245, 247, 250, 0.4);
+
+    /* Accent system */
+    --hud-accent: #74F7FF;
+    --accent-purple: #A855F7;
+    --accent-purple-2: #7C5CFF;
+    --accent-success: #5FFFB3;
+    --accent-warm: #FFC766;
+
+    --font-heading: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
 }
 
-.portal-container {
+.splash-station {
     position: fixed;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100vw;
     height: 100vh;
     background-color: var(--void-bg);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    overflow: hidden;
     z-index: 9999;
-    overflow: hidden;
-    /* Cinematic transition into the universe */
-    transition: opacity 2s cubic-bezier(0.19, 1, 0.22, 1), 
-                transform 2s cubic-bezier(0.19, 1, 0.22, 1);
+    transition: opacity 1.1s var(--ease-out-expo), visibility 1.1s var(--ease-out-expo);
 }
 
-/* The "Brutal Contrast" Noise Overlay */
-.portal-overlay {
+/* Fullscreen looping video backdrop — the dominant visual element */
+.splash-video {
     position: absolute;
     inset: 0;
-    opacity: 0.4;
-    z-index: 1;
-    pointer-events: none;
-    filter: contrast(150%) brightness(50%);
-    background: radial-gradient(circle at center, transparent 30%, #000 70%),
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* The Sling-Ring Frame */
-.portal-ring {
-    position: relative;
-    width: var(--portal-size);
-    height: var(--portal-size);
-    border-radius: 50%;
-    z-index: 2;
-    cursor: pointer;
-    /* Box-shadow is removed here as it's now handled dynamically by js/components/portal.js sparks */
-    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.portal-ring:hover {
-    transform: scale(1.02);
-}
-
-/* The Viewport Masking */
-.portal-inner-preview {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background: transparent;
-    overflow: hidden;
-    /* Marvel-style radial mask */
-    mask-image: radial-gradient(circle, black 50%, transparent 75%);
-    -webkit-mask-image: radial-gradient(circle, black 50%, transparent 75%);
-}
-
-#portal-canvas {
     width: 100%;
     height: 100%;
-    /* Subtle blur to blend sparks with the void */
-    filter: blur(0.5px);
+    object-fit: cover;
+    z-index: 0;
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    opacity: 0;
+    animation: splash-video-in 1.6s ease-out 0.15s forwards;
 }
 
-/* UI Text Styling */
-.portal-text {
+.splash-video-fallback {
     position: absolute;
-    bottom: 12%;
-    text-align: center;
-    z-index: 3;
+    inset: 0;
+    z-index: -1;
+    background:
+        radial-gradient(ellipse at 50% 30%, rgba(116, 247, 255, 0.05), transparent 60%),
+        radial-gradient(ellipse at 50% 100%, rgba(124, 92, 255, 0.2), transparent 65%),
+        var(--void-bg);
+}
+
+@keyframes splash-video-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.splash-scanlines {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
     pointer-events: none;
-    opacity: 0.8;
+    opacity: 0.2;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
+    background-size: 100% 4px;
 }
 
-.glitch {
-    font-family: 'Syncopate', sans-serif;
-    font-size: 0.8rem;
-    letter-spacing: 12px;
-    color: var(--interface-accent);
+/* Ambient lighting breathes slowly rather than sitting static */
+.splash-vignette {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 38%, rgba(0, 0, 0, 0.78) 100%);
+    animation: vignette-breathe 9s ease-in-out infinite;
+}
+
+@keyframes vignette-breathe {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.85; }
+}
+
+.portal-burst-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    pointer-events: none;
+    opacity: 0;
+}
+
+/* ===== HUD chrome — quiet, monospace, low-weight ===== */
+
+.splash-topbar,
+.splash-footbar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 32px 44px;
+    pointer-events: none;
+}
+
+.splash-topbar { top: 0; }
+.splash-footbar { bottom: 0; }
+
+.hud-tag {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
+    color: var(--text-tertiary);
+    opacity: 0;
 }
 
-.sub-text {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.6rem;
-    color: rgba(255, 255, 255, 0.3);
-    margin-top: 20px;
-    letter-spacing: 4px;
+.hud-tag--right { align-items: flex-end; text-align: right; }
+
+.hud-tag-value {
+    color: var(--text-secondary);
+    font-weight: 500;
 }
 
-/* 0.1% Smooth Dissolve Sequence */
-.portal-container.active {
+.hud-tag-value.online { color: var(--accent-success); }
+
+.splash-topbar .hud-tag {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    color: var(--hud-accent);
+}
+
+/* Console LED: mostly steady, flickers briefly on a slow cycle */
+.pulse-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--hud-accent);
+    box-shadow: 0 0 6px var(--hud-accent);
+    animation: pulse-dot-flicker 8s ease-in-out infinite;
+}
+
+@keyframes pulse-dot-flicker {
+    0%, 92%, 100% { opacity: 1; }
+    94% { opacity: 0.2; }
+    96% { opacity: 1; }
+    97% { opacity: 0.3; }
+}
+
+/* ===== Core content — quiet hierarchy, generous spacing ===== */
+
+.splash-core {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 24px;
+}
+
+.mission-preamble {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+    opacity: 0;
+}
+
+.hud-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--hud-accent);
+}
+
+.preamble-divider {
+    width: 1px;
+    height: 28px;
+    background: linear-gradient(to bottom, var(--hud-accent), transparent);
+    opacity: 0.5;
+}
+
+.splash-title {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: clamp(1.6rem, 2.6vw, 1.9rem);
+    letter-spacing: 1px;
+    color: var(--text-primary);
+    opacity: 0;
+    margin-bottom: 20px;
+}
+
+.splash-copy {
+    font-family: var(--font-body);
+    font-weight: 300;
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: var(--text-secondary);
+    max-width: 420px;
+    opacity: 0;
+}
+
+.cta-divider {
+    display: block;
+    width: 1px;
+    height: 34px;
+    background: linear-gradient(to bottom, transparent, rgba(245, 247, 250, 0.25), transparent);
+    margin: 26px 0;
+    opacity: 0;
+}
+
+/* ===== CTA — glass gateway button ===== */
+
+.mission-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(245, 247, 250, 0.04);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(116, 247, 255, 0.25);
+    border-radius: 999px;
+    padding: 15px 32px 15px 24px;
+    font-family: var(--font-heading);
+    font-weight: 500;
+    font-size: 0.8rem;
+    letter-spacing: 1.5px;
+    color: var(--text-primary);
+    cursor: pointer;
+    overflow: hidden;
+    opacity: 0;
+    transition: border-color 0.5s var(--ease-out-expo), box-shadow 0.5s var(--ease-out-expo), transform 0.3s var(--ease-out-expo);
+    will-change: transform;
+}
+
+.mission-btn-glyph {
+    color: var(--hud-accent);
+    font-size: 0.7rem;
+}
+
+.mission-btn-arrow {
+    opacity: 0.6;
+    transition: transform 0.4s var(--ease-out-expo), opacity 0.4s var(--ease-out-expo);
+}
+
+/* Animated border scan — a slow conic sweep, not a constant spin */
+.mission-btn-scan {
+    position: absolute;
+    inset: -1px;
+    border-radius: 999px;
+    padding: 1px;
+    background: conic-gradient(from 0deg, transparent 0%, var(--hud-accent) 8%, transparent 16%, transparent 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    animation: scan-sweep 7s linear infinite;
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+@keyframes scan-sweep {
+    to { transform: rotate(360deg); }
+}
+
+.mission-btn:hover {
+    border-color: rgba(116, 247, 255, 0.6);
+    box-shadow:
+        0 0 24px rgba(116, 247, 255, 0.25),
+        0 0 48px rgba(168, 85, 247, 0.15);
+}
+
+.mission-btn:hover .mission-btn-arrow {
+    transform: translateX(4px);
+    opacity: 1;
+}
+
+.mission-btn.is-launching {
+    pointer-events: none;
+}
+
+.splash-hint {
+    margin-top: 30px;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.5px;
+    line-height: 1.6;
+    color: var(--text-tertiary);
+    opacity: 0;
+}
+
+/* ===== Exit transition ===== */
+
+.splash-station.is-transitioning .splash-core,
+.splash-station.is-transitioning .splash-topbar,
+.splash-station.is-transitioning .splash-footbar {
+    transition: opacity 0.5s var(--ease-out-expo);
     opacity: 0;
     pointer-events: none;
-    transform: scale(1.5);
-    filter: blur(20px); /* Creates the "Cinematic Fade" into the universe */
 }
 
-/* Mobile Conformance */
+.splash-station.dissolved {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
 @media (max-width: 768px) {
-    :root {
-        --portal-size: 320px;
-    }
-    .glitch {
-        font-size: 0.6rem;
-        letter-spacing: 8px;
-    }
+    .splash-title { font-size: 1.4rem; }
+    .splash-copy { font-size: 0.85rem; }
+    .hud-label { letter-spacing: 3px; }
+    .splash-topbar, .splash-footbar { padding: 22px; }
+    .hud-tag { font-size: 0.55rem; }
+    .mission-btn { padding: 13px 26px 13px 20px; }
 }
